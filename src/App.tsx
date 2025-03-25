@@ -1,24 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
+import GameSetupWizard from './components/wizard/GameSetupWizard';
+import { GameSetupData } from './components/wizard/types';
 import './App.css';
 
 function App() {
+  const handleGameSetup = (gameData: GameSetupData) => {
+    console.log('Game setup complete:', gameData);
+    // We'll implement the game screen later
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GameSetupWizard onComplete={handleGameSetup} />
     </div>
   );
 }
