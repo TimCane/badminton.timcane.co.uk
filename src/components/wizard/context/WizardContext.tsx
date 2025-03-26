@@ -55,15 +55,28 @@ export function WizardProvider({ children }: { children: ReactNode }) {
 
   const updateData = <K extends keyof GameSetupData>(key: K, value: GameSetupData[K]) => {
     dispatch({ type: 'UPDATE_DATA', key, value });
+  };
+
+  const nextStep = () => {
     dispatch({ type: 'NEXT_STEP' });
   };
 
-  const nextStep = () => dispatch({ type: 'NEXT_STEP' });
-  const prevStep = () => dispatch({ type: 'PREV_STEP' });
+  const prevStep = () => {
+    dispatch({ type: 'PREV_STEP' });
+  };
+
   const isComplete = state.currentStep === TOTAL_STEPS;
 
+  const value = {
+    state,
+    updateData,
+    nextStep,
+    prevStep,
+    isComplete
+  };
+
   return (
-    <WizardContext.Provider value={{ state, updateData, nextStep, prevStep, isComplete }}>
+    <WizardContext.Provider value={value}>
       {children}
     </WizardContext.Provider>
   );
