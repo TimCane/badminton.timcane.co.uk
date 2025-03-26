@@ -83,4 +83,4 @@ export const useWizard = () => {
   return context;
 };
 
-export const STEPS = ['gameType', 'setCount', 'startingPlayer'] as const;
+export const STEPS = ['gameType', 'setCount', 'startingSide'] as const;

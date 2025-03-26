@@ -1,42 +1,41 @@
 import React from 'react';
-import { StartingPlayer } from '../../types';
+import { StartingSide } from '../../types';
 import { useWizard } from '../../context/WizardContext';
-import { Button, ButtonGroup, Container, Title } from './StartingPlayerStep.styles';
 import { AnimatedRipple } from '../../../common/AnimatedRipple/AnimatedRipple';
 import { useRippleAnimation } from '../../../../hooks/useRippleAnimation';
 import { colors } from '../../../../theme/colors';
+import { Container, Title, ButtonGroup, Button } from './StartingSideStep.styles';
 
-export const StartingPlayerStep: React.FC = () => {
+export const StartingSideStep: React.FC = () => {
   const { updateData, nextStep } = useWizard();
   const { ripple, startAnimation, handleAnimationComplete } = useRippleAnimation(nextStep);
 
-  const handleSelect = (player: StartingPlayer, event: React.MouseEvent<HTMLButtonElement>) => {
-    updateData('startingPlayer', player);
+  const handleSelect = (side: StartingSide, event: React.MouseEvent<HTMLButtonElement>) => {
+    updateData('startingSide', side);
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
-    startAnimation(rect.left + rect.width / 2, rect.top + rect.height / 2, getButtonColor(player));
-    nextStep();
+    startAnimation(rect.left + rect.width / 2, rect.top + rect.height / 2, getButtonColor(side));
   };
 
-  const getButtonColor = (player: StartingPlayer) => {
-    return player === 'You' ? colors.courtBlue : colors.yonexRed;
+  const getButtonColor = (side: StartingSide) => {
+    return side === 'Left' ? colors.courtBlue : colors.yonexRed;
   };
 
   return (
     <Container>
-      <Title>Who Starts?</Title>
+      <Title>Starting Side</Title>
       <ButtonGroup>
         <Button
-          onClick={(e) => handleSelect('You', e)}
-          $color={getButtonColor('You')}
+          onClick={(e) => handleSelect('Left', e)}
+          $color={getButtonColor('Left')}
         >
-          You
+          Left
         </Button>
         <Button
-          onClick={(e) => handleSelect('Opponent', e)}
-          $color={getButtonColor('Opponent')}
+          onClick={(e) => handleSelect('Right', e)}
+          $color={getButtonColor('Right')}
         >
-          Opponent
+          Right
         </Button>
       </ButtonGroup>
       {ripple && (

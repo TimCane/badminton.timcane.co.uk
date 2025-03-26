@@ -16,7 +16,6 @@ export const SetCountStep: React.FC = () => {
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
     startAnimation(rect.left + rect.width / 2, rect.top + rect.height / 2, getButtonColor(count));
-    nextStep();
   };
 
   const getButtonColor = (count: SetCount) => {
@@ -28,7 +27,7 @@ export const SetCountStep: React.FC = () => {
       <Title>Number of Sets</Title>
       <ButtonGroup>
         {options.map((count) => (
-          <Button 
+          <Button
             key={count}
             onClick={(e) => handleSelect(count, e)}
             $color={getButtonColor(count)}

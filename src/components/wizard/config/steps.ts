@@ -1,6 +1,6 @@
-import { GameTypeStep } from '../steps/GameTypeStep';
-import { SetCountStep } from '../steps/SetCountStep';
-import { StartingPlayerStep } from '../steps/StartingPlayerStep';
+import { GameTypeStep } from "../steps/GameTypeStep";
+import { SetCountStep } from "../steps/SetCountStep";
+import { StartingSideStep } from "../steps/StartingSideStep";
 
 export const steps = [
   {
@@ -14,9 +14,9 @@ export const steps = [
     title: 'Number of Sets'
   },
   {
-    id: 'startingPlayer',
-    component: StartingPlayerStep,
-    title: 'Who Starts?'
+    id: 'startingSide',
+    component: StartingSideStep,
+    title: 'Starting Side'
   }
 ] as const;
 
