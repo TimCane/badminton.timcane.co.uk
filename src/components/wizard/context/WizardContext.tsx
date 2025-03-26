@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { GameSetupData } from '../types';
+import { steps } from '../config/steps';
 
 interface WizardState {
   currentStep: number;
@@ -19,7 +20,7 @@ interface WizardContextType {
   isComplete: boolean;
 }
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = steps.length;
 
 const initialState: WizardState = {
   currentStep: 0,
@@ -50,7 +51,7 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
   }
 }
 
-export function WizardProvider({ children }: { children: ReactNode }) {
+export const WizardProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(wizardReducer, initialState);
 
   const updateData = <K extends keyof GameSetupData>(key: K, value: GameSetupData[K]) => {
@@ -67,27 +68,19 @@ export function WizardProvider({ children }: { children: ReactNode }) {
 
   const isComplete = state.currentStep === TOTAL_STEPS;
 
-  const value = {
-    state,
-    updateData,
-    nextStep,
-    prevStep,
-    isComplete
-  };
-
   return (
-    <WizardContext.Provider value={value}>
+    <WizardContext.Provider value={{ state, updateData, nextStep, prevStep, isComplete }}>
       {children}
     </WizardContext.Provider>
   );
-}
+};
 
-export function useWizard() {
+export const useWizard = () => {
   const context = useContext(WizardContext);
   if (!context) {
     throw new Error('useWizard must be used within a WizardProvider');
   }
   return context;
-}
+};
 
-export const STEPS = ['gameType', 'setCount', 'startingPlayer', 'servingPlayer'] as const;
+export const STEPS = ['gameType', 'setCount', 'startingPlayer'] as const;

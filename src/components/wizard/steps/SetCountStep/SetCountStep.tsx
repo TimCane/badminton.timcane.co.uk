@@ -16,6 +16,7 @@ export const SetCountStep: React.FC = () => {
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
     startAnimation(rect.left + rect.width / 2, rect.top + rect.height / 2, getButtonColor(count));
+    nextStep();
   };
 
   const getButtonColor = (count: SetCount) => {

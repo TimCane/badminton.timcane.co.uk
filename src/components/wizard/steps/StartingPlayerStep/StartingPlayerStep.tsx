@@ -15,6 +15,7 @@ export const StartingPlayerStep: React.FC = () => {
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
     startAnimation(rect.left + rect.width / 2, rect.top + rect.height / 2, getButtonColor(player));
+    nextStep();
   };
 
   const getButtonColor = (player: StartingPlayer) => {
@@ -25,13 +26,13 @@ export const StartingPlayerStep: React.FC = () => {
     <Container>
       <Title>Who Starts?</Title>
       <ButtonGroup>
-        <Button 
+        <Button
           onClick={(e) => handleSelect('You', e)}
           $color={getButtonColor('You')}
         >
           You
         </Button>
-        <Button 
+        <Button
           onClick={(e) => handleSelect('Opponent', e)}
           $color={getButtonColor('Opponent')}
         >
