@@ -1,0 +1,80 @@
+import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import { GameSetupData } from '../types';
+
+interface WizardState {
+  currentStep: number;
+  data: Partial<GameSetupData>;
+}
+
+type WizardAction = 
+  | { type: 'UPDATE_DATA'; key: keyof GameSetupData; value: any }
+  | { type: 'NEXT_STEP' }
+  | { type: 'PREV_STEP' };
+
+interface WizardContextType {
+  state: WizardState;
+  updateData: <K extends keyof GameSetupData>(key: K, value: GameSetupData[K]) => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  isComplete: boolean;
+}
+
+const TOTAL_STEPS = 4;
+
+const initialState: WizardState = {
+  currentStep: 0,
+  data: {}
+};
+
+const WizardContext = createContext<WizardContextType | undefined>(undefined);
+
+function wizardReducer(state: WizardState, action: WizardAction): WizardState {
+  switch (action.type) {
+    case 'UPDATE_DATA':
+      return {
+        ...state,
+        data: { ...state.data, [action.key]: action.value }
+      };
+    case 'NEXT_STEP':
+      return {
+        ...state,
+        currentStep: Math.min(state.currentStep + 1, TOTAL_STEPS)
+      };
+    case 'PREV_STEP':
+      return {
+        ...state,
+        currentStep: Math.max(state.currentStep - 1, 0)
+      };
+    default:
+      return state;
+  }
+}
+
+export function WizardProvider({ children }: { children: ReactNode }) {
+  const [state, dispatch] = useReducer(wizardReducer, initialState);
+
+  const updateData = <K extends keyof GameSetupData>(key: K, value: GameSetupData[K]) => {
+    dispatch({ type: 'UPDATE_DATA', key, value });
+    dispatch({ type: 'NEXT_STEP' });
+  };
+
+  const nextStep = () => dispatch({ type: 'NEXT_STEP' });
+  const prevStep = () => dispatch({ type: 'PREV_STEP' });
+  const isComplete = state.currentStep === TOTAL_STEPS;
+
+  return (
+    <WizardContext.Provider value={{ state, updateData, nextStep, prevStep, isComplete }}>
+      {children}
+    </WizardContext.Provider>
+  );
+}
+
+export function useWizard() {
+  const context = useContext(WizardContext);
+  if (!context) {
+    throw new Error('useWizard must be used within a WizardProvider');
+  }
+  return context;
+}
+
+export const STEPS = ['gameType', 'setCount', 'startingPlayer', 'servingPlayer'] as const;
